@@ -547,11 +547,15 @@
         let currentCategoryItems = [];
         let currentCategoryKey = '';
 
-        function showSection(sectionId) {
+        function showSection(sectionId, updateHash = true) {
             document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
             
             document.getElementById(sectionId).classList.add('active');
+
+            if (updateHash) {
+                window.location.hash = sectionId;
+            }
 
             // প্রজেক্ট বা ক্যাটাগরি ভিউ বাদে বাকি পেজে সার্চ বার লুকানো থাকবে
             const searchBar = document.getElementById('header-search-bar');
@@ -568,8 +572,12 @@
             else document.getElementById('nav-home').classList.add('active');
         }
 
-        async function openCategory(categoryKey) {
-            showSection('category-detail-page');
+        async function openCategory(categoryKey, updateHash = true) {
+            showSection('category-detail-page', false);
+            
+            if (updateHash) {
+                window.location.hash = 'category-' + categoryKey;
+            }
             
             currentCategoryKey = categoryKey;
             document.getElementById('project-search-input').value = ""; // সার্চ ইনপুট রিফোকাছ ও খালি করা
@@ -635,6 +643,20 @@
             );
             renderProjects(filteredItems);
         }
+
+        // পেজ রিফ্রেশ হলে অবস্থা মনে রাখার কোড
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            
+            if (hash.startsWith('category-')) {
+                const catKey = hash.replace('category-', '');
+                openCategory(catKey, false);
+            } else if (hash && document.getElementById(hash)) {
+                showSection(hash, false);
+            } else {
+                showSection('home-page', false);
+            }
+        });
     </script>
 </body>
 </html>
