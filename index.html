@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB-XBD - Global Web Solutions</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f141c;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* ফিক্সড হেডার */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 2%;
+            background: rgba(15, 20, 28, 0.95);
+            border-bottom: 1px solid #1e2638;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo img {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+            display: block;
+        }
+
+        /* হেডার সার্চ বার (লোগোর পাশে) */
+        .header-search {
+            position: relative;
+            width: 250px;
+            display: none; /* ডিফল্টভাবে লুকানো থাকবে, প্রজেক্টে ক্লিক করলে দেখাবে */
+        }
+
+        .header-search input {
+            width: 100%;
+            padding: 8px 35px 8px 15px;
+            background-color: #161e2e;
+            border: 1px solid #232d42;
+            border-radius: 20px;
+            color: #ffffff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .header-search input:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        .header-search i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #38bdf8;
+            font-size: 14px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            color: #38bdf8;
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* হোম পেজ সেকশন */
+        .hero {
+            text-align: center;
+            padding: 100px 20px 80px;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f141c 70%);
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #e2e8f0;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #94a3b8;
+            margin-bottom: 35px;
+        }
+
+        .btn-learn {
+            display: inline-block;
+            padding: 12px 32px;
+            border: 1px solid #38bdf8;
+            border-radius: 25px;
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+            cursor: pointer;
+        }
+
+        .btn-learn:hover {
+            background-color: #38bdf8;
+            color: #0f141c;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+        }
+
+        .expertise {
+            padding: 60px 8%;
+            text-align: center;
+        }
+
+        .expertise h2 {
+            font-size: 20px;
+            letter-spacing: 2px;
+            color: #cbd5e1;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: #161e2e;
+            padding: 30px 20px;
+            border-radius: 8px;
+            border: 1px solid #232d42;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+        }
+
+        .service-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #38bdf8;
+        }
+
+        .service-card h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            color: #e2e8f0;
+        }
+
+        .service-card p {
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* সার্ভিসেস ও প্রজেক্টস সেকশন */
+        .section-container {
+            padding: 50px 3%;
+            text-align: center;
+        }
+
+        .section-container h2 {
+            font-size: 24px;
+            letter-spacing: 2px;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        /* সারিতে ৭টি বক্স */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+        }
+
+        .grid-box {
+            background: #161e2e;
+            aspect-ratio: 1 / 1;
+            border-radius: 8px;
+            border: 1px solid #232d42;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .grid-box:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+        }
+
+        .grid-box span {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .grid-box h4 {
+            font-size: 11px;
+            color: #e2e8f0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        /* ডাইনামিক কন্টেন্ট ডিসপ্লে গ্রিড */
+        .project-content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .item-card {
+            background: #161e2e;
+            border: 1px solid #232d42;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+        }
+
+        .item-card img, .item-card video {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .item-card-body {
+            padding: 15px;
+        }
+
+        .item-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 10px;
+        }
+
+        .item-card-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #38bdf8;
+            color: #0f141c;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        /* কন্টাক্ট সেকশন */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(200px, 260px));
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-box i { font-size: 55px; margin-bottom: 12px; }
+        .fa-facebook { color: #1877f2; }
+        .fa-whatsapp { color: #25d366; }
+        .fa-envelope { color: #ea4335; }
+
+        /* এবাউট পেজ সেকশন */
+        .about-card {
+            background: #161e2e;
+            border: 1px solid #232d42;
+            border-radius: 10px;
+            padding: 35px;
+            text-align: left;
+            margin-top: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .about-card h3 {
+            color: #38bdf8;
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .about-card p {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .about-card ul {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.8;
+            padding-left: 20px;
+            margin-bottom: 25px;
+        }
+
+        .about-card ul li {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 1200px) {
+            .items-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .items-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-grid { grid-template-columns: repeat(1, 1fr); }
+            .header-search { width: 160px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- হেডার -->
+    <header>
+        <div class="header-left">
+            <div class="logo">
+                <img src="https://scontent.fdac5-2.fna.fbcdn.net/v/t39.30808-6/784233161_122160603944408338_3077432336727976178_n.jpg?stp=dst-jpg_tt6&cstp=mx1019x1024&ctp=s1019x1024&_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeEurc7BOBK3OP98kaS6frm_GeELXII0lpsZ4QtcgjSWm2Y4uP8LjYpxST7DVWpQyT3CNwf23sViCyER6Zai2ruB&_nc_ohc=m99yHDlD_UcQ7kNvwEIRrd-&_nc_oc=AdqPUCcYQ583WqTFu6eZS7hl-umbyaatDwBQvpgB5SHp4tiLe2OvzayMDCKjL0r7Xkk&_nc_zt=23&_nc_ht=scontent.fdac5-2.fna&_nc_gid=VsWhJUw9LH8KX0dPul4FjQ&_nc_ss=7b2a8&oh=00_AQH93HxHFZDOMTR7h2A4Zl1x2acXjUXw01zJfdV7tUG0EA&oe=6A92EA01" alt="WEB-XBD Logo">
+            </div>
+            <!-- লোগোর ঠিক পাশে সার্চ বার -->
+            <div class="header-search" id="header-search-bar">
+                <input type="text" id="project-search-input" placeholder="" onkeyup="filterProjects()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a onclick="showSection('home-page')" id="nav-home" class="active">HOME</a></li>
+                <li><a onclick="showSection('services-page')" id="nav-services">SERVICES</a></li>
+                <li><a onclick="showSection('projects-page')" id="nav-projects">PROJECTS</a></li>
+                <li><a onclick="showSection('contact-page')" id="nav-contact">CONTACT</a></li>
+                <li><a onclick="showSection('about-page')" id="nav-about">ABOUT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- হোম পেজ -->
+    <div id="home-page" class="page-section active">
+        <section class="hero">
+            <h1>GLOBAL WEB SOLUTIONS</h1>
+            <p>Innovative digital experiences for a connected world.</p>
+            <a onclick="showSection('about-page')" class="btn-learn">LEARN MORE</a>
+        </section>
+
+        <section class="expertise">
+            <h2>OUR EXPERTISE</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🌐</div>
+                    <h3>WEBSITE DESIGN</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📱</div>
+                    <h3>APP DESIGN</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🎨</div>
+                    <h3>PHOTO AND TEMPLATE DESIGN</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⚡</div>
+                    <h3>OTHER</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- সার্ভিসেস পেজ -->
+    <div id="services-page" class="page-section">
+        <section class="section-container">
+            <h2>ALL SERVICES WE OFFER</h2>
+            <div class="items-grid">
+                <div class="grid-box"><span>📱</span><h4>APP DESIGN</h4></div>
+                <div class="grid-box"><span>🌐</span><h4>WEBSITE DESIGN</h4></div>
+                <div class="grid-box"><span>💻</span><h4>SOFTWARE</h4></div>
+                <div class="grid-box"><span>🎨</span><h4>TEMPLATE</h4></div>
+                <div class="grid-box"><span>📚</span><h4>BOOK</h4></div>
+                <div class="grid-box"><span>🧊</span><h4>3D</h4></div>
+                <div class="grid-box"><span>🖼️</span><h4>PHOTO</h4></div>
+                <div class="grid-box"><span>🎬</span><h4>VIDEO</h4></div>
+                <div class="grid-box"><span>🛠️</span><h4>TOOL</h4></div>
+                <div class="grid-box"><span>⚡</span><h4>OTHER</h4></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- প্রজেক্টস পেজ -->
+    <div id="projects-page" class="page-section">
+        <section class="section-container">
+            <h2>ALL PROJECTS WE DESIGNED</h2>
+            <div class="items-grid">
+                <div class="grid-box" onclick="openCategory('app')"><span>📱</span><h4>APP DESIGN</h4></div>
+                <div class="grid-box" onclick="openCategory('website')"><span>🌐</span><h4>WEBSITE DESIGN</h4></div>
+                <div class="grid-box" onclick="openCategory('software')"><span>💻</span><h4>SOFTWARE</h4></div>
+                <div class="grid-box" onclick="openCategory('template')"><span>🎨</span><h4>TEMPLATE</h4></div>
+                <div class="grid-box" onclick="openCategory('book')"><span>📚</span><h4>BOOK</h4></div>
+                <div class="grid-box" onclick="openCategory('3d')"><span>🧊</span><h4>3D</h4></div>
+                <div class="grid-box" onclick="openCategory('photo')"><span>🖼️</span><h4>PHOTO</h4></div>
+                <div class="grid-box" onclick="openCategory('video')"><span>🎬</span><h4>VIDEO</h4></div>
+                <div class="grid-box" onclick="openCategory('tool')"><span>🛠️</span><h4>TOOL</h4></div>
+                <div class="grid-box" onclick="openCategory('other')"><span>⚡</span><h4>OTHER</h4></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ক্যাটাগরি ভিউ (ব্যাক বাটন ছাড়া) -->
+    <div id="category-detail-page" class="page-section">
+        <section class="section-container">
+            <h2 id="category-title"></h2>
+            <div id="category-items-container" class="project-content-grid"></div>
+        </section>
+    </div>
+
+    <!-- কন্টাক্ট পেজ -->
+    <div id="contact-page" class="page-section">
+        <section class="section-container">
+            <h2>CONTACT WITH US</h2>
+            <div class="contact-grid">
+                <a href="https://www.facebook.com/sobuj.akash.764212" target="_blank" class="grid-box contact-box"><i class="fa-brands fa-facebook"></i><h4>FACEBOOK</h4></a>
+                <a href="https://wa.me/8801795226250" target="_blank" class="grid-box contact-box"><i class="fa-brands fa-whatsapp"></i><h4>WHATSAPP</h4></a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=mel471081@gmail.com" target="_blank" class="grid-box contact-box"><i class="fa-solid fa-envelope"></i><h4>GMAIL</h4></a>
+            </div>
+        </section>
+    </div>
+
+    <!-- এবাউট পেজ -->
+    <div id="about-page" class="page-section">
+        <section class="section-container" style="max-width: 900px; margin: 0 auto;">
+            <h2>ABOUT WEB-XBD</h2>
+            <p style="color: #38bdf8; font-size: 16px; font-weight: 600; margin-bottom: 25px;">
+                Empowering Digital Transformation & High-Performance Web Solutions
+            </p>
+
+            <div class="about-card">
+                <p>
+                    Welcome to <strong>WEB-XBD</strong>, your premier destination for modern web design, software development, and digital innovation. We are a forward-thinking digital solutions agency dedicated to transforming complex ideas into intuitive, high-performing web platforms and applications.
+                </p>
+                <p>
+                    At <strong>WEB-XBD</strong>, we believe that a strong digital presence is the foundation of modern business success. Our mission is to bridge the gap between imagination and execution by providing tailored, scalable, and secure digital services for clients worldwide.
+                </p>
+
+                <h3>OUR CORE EXPERTISE</h3>
+                <ul>
+                    <li><strong>Custom Web & Application Development:</strong> Building responsive, fast-loading, and interactive web applications using modern front-end and back-end architecture.</li>
+                    <li><strong>UI/UX Design & Front-End Innovation:</strong> Crafting sleek, user-centric interfaces and templates that ensure an engaging visual experience.</li>
+                    <li><strong>Streaming & Media Solutions:</strong> Developing custom media players, playlist management tools, and streaming interfaces engineered for seamless content delivery.</li>
+                    <li><strong>Automation & Cloud Services:</strong> Streamlining workflows through automated scripts, cloud worker configurations, and efficient data processing engines.</li>
+                </ul>
+
+                <h3>WHY WORK WITH WEB-XBD?</h3>
+                <ul>
+                    <li><strong>Performance-Driven Architecture:</strong> We prioritize speed, responsiveness, and clean code to deliver seamless user experiences.</li>
+                    <li><strong>Innovative Problem Solving:</strong> From custom script development to full-scale web platforms, we engineer solutions built around your exact technical requirements.</li>
+                    <li><strong>Scalability & Security:</strong> Our projects are built with modern standards, ensuring long-term stability and effortless growth.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- জাভাস্ক্রিপ্ট -->
+    <script>
+        const JSON_URLS = {
+            app: "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/app.json",
+            website: "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/website.json",
+            software: "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/software.json",
+            template: "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/template.json",
+            book: "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/book.json",
+            "3d": "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/3d.json",
+            photo: "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/photo.json",
+            video: "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/video.json",
+            tool: "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/tool.json",
+            other: "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/other.json"
+        };
+
+        let currentCategoryItems = [];
+        let currentCategoryKey = '';
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+
+            // প্রজেক্ট বা ক্যাটাগরি ভিউ বাদে বাকি পেজে সার্চ বার লুকানো থাকবে
+            const searchBar = document.getElementById('header-search-bar');
+            if (sectionId === 'category-detail-page' || sectionId === 'projects-page') {
+                searchBar.style.display = 'block';
+            } else {
+                searchBar.style.display = 'none';
+            }
+
+            if(sectionId === 'projects-page') document.getElementById('nav-projects').classList.add('active');
+            else if(sectionId === 'services-page') document.getElementById('nav-services').classList.add('active');
+            else if(sectionId === 'contact-page') document.getElementById('nav-contact').classList.add('active');
+            else if(sectionId === 'about-page') document.getElementById('nav-about').classList.add('active');
+            else document.getElementById('nav-home').classList.add('active');
+        }
+
+        async function openCategory(categoryKey) {
+            showSection('category-detail-page');
+            
+            currentCategoryKey = categoryKey;
+            document.getElementById('project-search-input').value = ""; // সার্চ ইনপুট রিফোকাছ ও খালি করা
+            
+            const container = document.getElementById('category-items-container');
+            const titleElement = document.getElementById('category-title');
+            
+            titleElement.innerText = categoryKey.toUpperCase() + " PROJECTS";
+            container.innerHTML = "<p style='color:#a0aec0; text-align:center; grid-column: 1/-1;'>Loading content...</p>";
+
+            const fileUrl = JSON_URLS[categoryKey];
+
+            if (!fileUrl) {
+                container.innerHTML = "<p style='color:#ef4444; text-align:center; grid-column: 1/-1;'>JSON URL for this category was not found.</p>";
+                return;
+            }
+
+            try {
+                const response = await fetch(fileUrl);
+                currentCategoryItems = await response.json();
+
+                renderProjects(currentCategoryItems);
+
+            } catch (error) {
+                container.innerHTML = "<p style='color:#ef4444; text-align:center; grid-column: 1/-1;'>Failed to load projects. Please check the specific GitHub JSON link.</p>";
+            }
+        }
+
+        function renderProjects(items) {
+            const container = document.getElementById('category-items-container');
+            container.innerHTML = "";
+
+            if (!items || items.length === 0) {
+                container.innerHTML = "<p style='color:#64748b; text-align:center; grid-column: 1/-1;'>No projects found.</p>";
+                return;
+            }
+
+            items.forEach(item => {
+                let mediaHTML = "";
+                if (currentCategoryKey === 'video') {
+                    mediaHTML = `<video src="${item.video_url}" controls></video>`;
+                } else {
+                    mediaHTML = `<img src="${item.image_url}" alt="${item.name}">`;
+                }
+
+                const cardHTML = `
+                    <div class="item-card">
+                        ${mediaHTML}
+                        <div class="item-card-body">
+                            <div class="item-card-title">${item.name}</div>
+                            <a href="${item.link}" target="_blank" class="item-card-btn">VIEW LINK</a>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+
+        function filterProjects() {
+            const searchQuery = document.getElementById('project-search-input').value.toLowerCase().trim();
+            const filteredItems = currentCategoryItems.filter(item => 
+                item.name.toLowerCase().includes(searchQuery)
+            );
+            renderProjects(filteredItems);
+        }
+    </script>
+</body>
+</html>
